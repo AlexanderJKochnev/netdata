@@ -1,35 +1,16 @@
 services:
-  netdata:
-    image: netdata/netdata:stable
-    container_name: netdata
+  glances:
+    image: nicolargo/glances:latest-full
+    container_name: glances
     restart: unless-stopped
-    hostname: debian-server-monitor
+    pid: host
     ports:
-      - "19999:19999"
-    cap_add:
-      - SYS_PTRACE
-      - NET_ADMIN
-    security_opt:
-      - apparmor:unconfined
-    # environment:
-      # Этот аргумент говорит серверу: "Принимай всё и не проверяй заголовки"
-      # - NETDATA_EXTRA_ARGS=-w allow_connections_from=* allow_dashboard_from=* allow_hosts=*
+      - "61208:61208"
+    environment:
+      - "GLANCES_OPT=-w"  # -w включает Web-интерфейс
     volumes:
-      - ./config/netdata.conf:/etc/netdata/netdata.conf:ro
-      - netdataconfig:/etc/netdata
-      - netdatalib:/var/lib/netdata
-      - netdatacache:/var/cache/netdata
-      - /etc/passwd:/host/etc/passwd:ro
-      - /etc/group:/host/etc/group:ro
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      # - /etc/os-release:/host/host/etc/os-release:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./nginx.conf:/etc/netdata/go.d/nginx.conf:ro
-      - /:/host/root:ro,rslave
-      - /etc/localtime:/etc/localtime:ro
       - /etc/os-release:/host/etc/os-release:ro
-      - /var/log:/host/var/log:ro
     networks:
       - nginx_gateway_shared_network
       - ollama_redis_network
@@ -38,10 +19,6 @@ services:
       - test_postgres_network
       - test_pgbouncer_network
       - test_redis_network
-volumes:
-  netdataconfig:
-  netdatalib:
-  netdatacache:
 
 networks:
   nginx_gateway_shared_network:
