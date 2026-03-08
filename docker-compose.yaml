@@ -29,9 +29,9 @@ services:
     networks:
       - nginx_gateway_shared_network
 volumes:
-  netdata-config:
-  netdata-lib:
-  netdata-cache:
+  netdataconfig:
+  netdatalib:
+  netdatacache:
 
 networks:
   nginx_gateway_shared_network:
