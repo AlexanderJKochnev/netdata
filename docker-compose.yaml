@@ -17,6 +17,7 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
+      - ./config/netdata.conf:/etc/netdata/netdata.conf:ro
       - netdataconfig:/etc/netdata
       - netdatalib:/var/lib/netdata
       - netdatacache:/var/cache/netdata
