@@ -11,6 +11,9 @@ services:
       - NET_ADMIN
     security_opt:
       - apparmor:unconfined
+    environment:
+      # Этот аргумент говорит серверу: "Принимай всё и не проверяй заголовки"
+      - NETDATA_EXTRA_ARGS=-w allow_connections_from=* allow_dashboard_from=* allow_hosts=*
     volumes:
       # - ./config/netdata.conf:/etc/netdata/netdata.conf:ro
       - netdataconfig:/etc/netdata
