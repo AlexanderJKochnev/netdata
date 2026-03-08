@@ -6,10 +6,15 @@ services:
     hostname: debian-server-monitor
     ports:
       - "19999:19999"
+    environment:
+      # Это заменяет правку netdata.conf вручную:
+      - NETDATA_WEB_BIND_TO=*
+      - NETDATA_WEB_ALLOW_CONNECTIONS_FROM=localhost *
+      - NETDATA_WEB_ALLOW_DASHBOARD_FROM=localhost *
     cap_add:
       - SYS_PTRACE
       - NET_ADMIN
-    security_opt:
+    ecurity_opt:
       - apparmor:unconfined
     volumes:
       - netdataconfig:/etc/netdata
@@ -26,8 +31,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/os-release:/host/etc/os-release:ro
       - /var/log:/host/var/log:ro
-      - ./netdata/config:/etc/netdata:ro
-      # - ./netdata/config/netdata.conf:/etc/netdata/netdata.conf:ro
     networks:
       - nginx_gateway_shared_network
 volumes:
