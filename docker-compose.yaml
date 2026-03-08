@@ -14,7 +14,7 @@ services:
     cap_add:
       - SYS_PTRACE
       - NET_ADMIN
-    ecurity_opt:
+    security_opt:
       - apparmor:unconfined
     volumes:
       - netdataconfig:/etc/netdata
