@@ -26,6 +26,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/os-release:/host/etc/os-release:ro
       - /var/log:/host/var/log:ro
+      - ./netdata/config:/etc/netdata:ro
       - ./netdata/config/netdata.conf:/etc/netdata/netdata.conf:ro
     networks:
       - nginx_gateway_shared_network
