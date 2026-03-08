@@ -6,11 +6,6 @@ services:
     hostname: debian-server-monitor
     ports:
       - "19999:19999"
-    environment:
-      # Это заменяет правку netdata.conf вручную:
-      - NETDATA_WEB_BIND_TO=*
-      - NETDATA_WEB_ALLOW_CONNECTIONS_FROM=localhost *
-      - NETDATA_WEB_ALLOW_DASHBOARD_FROM=localhost *
     cap_add:
       - SYS_PTRACE
       - NET_ADMIN
@@ -34,6 +29,12 @@ services:
       - /var/log:/host/var/log:ro
     networks:
       - nginx_gateway_shared_network
+      - ollama_redis_network
+      - prod_postgres_network
+      - prod_pgbouncer_network
+      - test_postgres_network
+      - test_pgbouncer_network
+      - test_redis_network
 volumes:
   netdataconfig:
   netdatalib:
@@ -41,5 +42,16 @@ volumes:
 
 networks:
   nginx_gateway_shared_network:
-    driver: bridge
+    external: true
+  ollama_redis_network:
+    external: true
+  prod_postgres_network:
+    external: true
+  prod_pgbouncer_network:
+    external: true
+  test_postgres_network:
+    external: true
+  test_pgbouncer_network:
+    external: true
+  test_redis_network:
     external: true
