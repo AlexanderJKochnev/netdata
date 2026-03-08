@@ -28,6 +28,10 @@ services:
       - /var/log:/host/var/log:ro
     networks:
       - nginx_gateway_shared_network
+volumes:
+  netdata-config:
+  netdata-lib:
+  netdata-cache:
 
 networks:
   nginx_gateway_shared_network:
