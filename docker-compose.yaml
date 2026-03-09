@@ -8,6 +8,9 @@ services:
       - NETDATA_HOSTNAME=debian-server
       # Добавьте эту строку:
       - NETDATA_EXTRA_ARGS=-D
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NETDATA_EXTRA_ARGS=-D -W set global "bind to" "*"
     # ports:
     #   - "19999:19999"
     cap_add:
@@ -39,6 +42,13 @@ services:
       - test_postgres_network
       - test_pgbouncer_network
       - test_redis_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu, utility ]
 volumes:
   netdataconfig:
   netdatalib:
