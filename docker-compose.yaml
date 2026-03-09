@@ -4,8 +4,12 @@ services:
     container_name: netdata
     restart: unless-stopped
     hostname: debian-server-monitor
-    ports:
-      - "19999:19999"
+    environment:
+      - NETDATA_HOSTNAME=debian-server
+      # Добавьте эту строку:
+      - NETDATA_EXTRA_ARGS=-D
+    # ports:
+    #   - "19999:19999"
     cap_add:
       - SYS_PTRACE
       - NET_ADMIN
