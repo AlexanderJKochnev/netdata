@@ -1,16 +1,32 @@
 services:
-  glances:
-    image: nicolargo/glances:latest-full
-    container_name: glances
+  netdata:
+    image: netdata/netdata:stable
+    container_name: netdata
     restart: unless-stopped
-    pid: host
+    hostname: debian-server-monitor
     ports:
-      - "61208:61208"
-    environment:
-      - "GLANCES_OPT=-w"  # -w включает Web-интерфейс
+      - "19999:19999"
+    cap_add:
+      - SYS_PTRACE
+      - NET_ADMIN
+    security_opt:
+      - apparmor:unconfined
     volumes:
+      - ./config/netdata.conf:/etc/netdata/netdata.conf:ro
+      - netdataconfig:/etc/netdata
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      # - /etc/os-release:/host/host/etc/os-release:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx.conf:/etc/netdata/go.d/nginx.conf:ro
+      - /:/host/root:ro,rslave
+      - /etc/localtime:/etc/localtime:ro
       - /etc/os-release:/host/etc/os-release:ro
+      - /var/log:/host/var/log:ro
     networks:
       - nginx_gateway_shared_network
       - ollama_redis_network
@@ -19,6 +35,10 @@ services:
       - test_postgres_network
       - test_pgbouncer_network
       - test_redis_network
+volumes:
+  netdataconfig:
+  netdatalib:
+  netdatacache:
 
 networks:
   nginx_gateway_shared_network:
