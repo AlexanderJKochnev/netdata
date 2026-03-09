@@ -34,6 +34,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/os-release:/host/etc/os-release:ro
       - /var/log:/host/var/log:ro
+      - /var/log/fail2ban.log:/var/log/fail2ban.log:ro
     networks:
       - nginx_gateway_shared_network
       - ollama_redis_network
